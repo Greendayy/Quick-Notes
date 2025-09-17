@@ -1,6 +1,6 @@
 import React from 'react'
 // import ReactDOM from 'react-dom/client'
-import App from './App.test' // Using test version to isolate issue
+import App from './App.hybrid' // Testing react-split without react-mde
 import ReactDOM from "react-dom";
 
 ReactDOM.render(<App />, document.getElementById("root"));
