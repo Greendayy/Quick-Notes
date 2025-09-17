@@ -7,24 +7,47 @@ import { nanoid } from "nanoid";
 import "./App.css";
 
 export default function App() {
-  const [notes, setNotes] = React.useState(
-    () => JSON.parse(localStorage.getItem("notes")) || []
-  );
+  const [notes, setNotes] = React.useState(() => {
+    try {
+      const savedNotes = localStorage.getItem("notes");
+      return savedNotes ? JSON.parse(savedNotes) : [];
+    } catch (error) {
+      console.error("Error loading notes from localStorage:", error);
+      return [];
+    }
+  });
   const [currentNoteId, setCurrentNoteId] = React.useState(
     (notes[0] && notes[0].id) || ""
   );
 
   React.useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
+    try {
+      localStorage.setItem("notes", JSON.stringify(notes));
+    } catch (error) {
+      console.error("Error saving notes to localStorage:", error);
+    }
   }, [notes]);
 
   function createNewNote() {
-    const newNote = {
-      id: nanoid(),
-      body: "# Type your markdown note's title here",
-    };
-    setNotes((prevNotes) => [newNote, ...prevNotes]);
-    setCurrentNoteId(newNote.id);
+    try {
+      const newId = nanoid();
+      console.log("Generated new note ID:", newId);
+      
+      const newNote = {
+        id: newId,
+        body: "# Type your markdown note's title here",
+      };
+      
+      setNotes(prevNotes => {
+        console.log("Previous notes count:", prevNotes.length);
+        return [newNote, ...prevNotes];
+      });
+      
+      console.log("Setting current note ID to:", newId);
+      setCurrentNoteId(newId);
+    } catch (error) {
+      console.error("Error creating new note:", error);
+    }
   }
 
   function updateNote(text) {
