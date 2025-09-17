@@ -1,6 +1,6 @@
 import React from 'react'
 // import ReactDOM from 'react-dom/client'
-import App from './App.hybrid' // Testing react-split without react-mde
+import App from './App.final' // Final version with custom markdown editor
 import ReactDOM from "react-dom";
 
 ReactDOM.render(<App />, document.getElementById("root"));
