@@ -12,10 +12,15 @@ export default function Editor({ currentNote, updateNote }) {
     tasklists: true,
   });
 
+  // Safety check for currentNote
+  if (!currentNote) {
+    return <div className="pane editor">No note selected</div>;
+  }
+
   return (
     <section className="pane editor">
       <ReactMde
-        value={currentNote.body}
+        value={currentNote.body || ""}
         onChange={updateNote}
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}

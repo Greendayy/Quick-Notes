@@ -45,7 +45,14 @@ export default function App() {
 
   function deleteNote(event, noteId) {
     event.stopPropagation();
-    setNotes((oldNotes) => oldNotes.filter((note) => note.id !== noteId));
+    setNotes((oldNotes) => {
+      const newNotes = oldNotes.filter((note) => note.id !== noteId);
+      // If we deleted the current note, update currentNoteId
+      if (noteId === currentNoteId) {
+        setCurrentNoteId(newNotes.length > 0 ? newNotes[0].id : "");
+      }
+      return newNotes;
+    });
   }
 
   function findCurrentNote() {
@@ -67,7 +74,7 @@ export default function App() {
             newNote={createNewNote}
             deleteNote={deleteNote}
           />
-          {currentNoteId && notes.length > 0 && (
+          {currentNoteId && notes.length > 0 && findCurrentNote() && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />
           )}
         </Split>
